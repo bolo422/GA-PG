@@ -1,2 +1,2 @@
 # GA-PG
- GA PG | Erick Oliveira e Carlos Vanoni
+ Alunos: Erick Oliveira e Carlos Vanoni
