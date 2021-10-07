@@ -252,7 +252,8 @@ int main()
 		obj3.update();
 		obj3.draw();
 
-		obj3.setPosition(glm::vec3(obj3.getPosition().x + 1, obj3.getPosition().y, obj3.getPosition().z));
+		obj3.addPositionX(1);
+		//obj3.setPosition(glm::vec3(obj3.getPosition().x + 1, obj3.getPosition().y, obj3.getPosition().z));
 		//cout << obj3.getPosition().x << endl;
 
 

@@ -1,5 +1,7 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: O diretório intermediário (Debug\) contém arquivos compartilhados de outro projeto (HelloOrtho.vcxproj). Isso pode levar a um comportamento incorreto de limpeza e recompilação.
+  Object.cpp
   Origem.cpp
 C:\Users\crow1\Documents\GitHub\GA-PG\GA\Exercicio7\Origem.cpp(47,25): warning C4305: 'inicializando': truncamento de 'double' para 'float'
 C:\Users\crow1\Documents\GitHub\GA-PG\GA\Exercicio7\Origem.cpp(246,21): warning C4018: '<': incompatibilidade de signed/unsigned
+  Gerando Código...
   Exercicio7.vcxproj -> C:\Users\crow1\Documents\GitHub\GA-PG\GA\Debug\HelloTransforms.exe

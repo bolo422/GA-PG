@@ -31,6 +31,11 @@ public:
 	inline void setPosition(float x, float y, float z) { position = glm::vec3(x,y,z); }
 	inline void setPositionX(float x) { position = glm::vec3(x,position.y,position.z); }
 	inline void setPositionY(float y) { position = glm::vec3(position.y, y, position.z); }
+	//Incremento de vetor de posição
+	inline void addPositionX(float x) { position = glm::vec3(position.x + x, position.y, position.z); }
+	inline void addPositionY(float y) { position = glm::vec3(position.x, position.y + y, position.z); }
+
+	
 	//Get posição
 	inline glm::vec3 getPosition() { return position; }
 	//Setar dimensões
