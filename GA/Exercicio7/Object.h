@@ -34,7 +34,9 @@ public:
 	//Incremento de vetor de posição
 	inline void addPositionX(float x) { position = glm::vec3(position.x + x, position.y, position.z); }
 	inline void addPositionY(float y) { position = glm::vec3(position.x, position.y + y, position.z); }
-
+	//Decremento de valor de posição
+	inline void removePositionX(float x) { position = glm::vec3(position.x - x, position.y, position.z); }
+	inline void removePositionY(float y) { position = glm::vec3(position.x, position.y - y, position.z); }
 	
 	//Get posição
 	inline glm::vec3 getPosition() { return position; }
