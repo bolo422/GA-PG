@@ -28,6 +28,11 @@ public:
 	void draw();
 	//Setar posição
 	inline void setPosition(glm::vec3 _position) { position = _position; }
+	inline void setPosition(float x, float y, float z) { position = glm::vec3(x,y,z); }
+	inline void setPositionX(float x) { position = glm::vec3(x,position.y,position.z); }
+	inline void setPositionY(float y) { position = glm::vec3(position.y, y, position.z); }
+	//Get posição
+	inline glm::vec3 getPosition() { return position; }
 	//Setar dimensões
 	inline void setDimensions(glm::vec3 _scale) { scale = _scale; }
 	//Setar angulo

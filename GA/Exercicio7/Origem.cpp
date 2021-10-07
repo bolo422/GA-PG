@@ -103,6 +103,7 @@ int main()
 
 	GLuint texID = loadTexture("./textures/coracao.png");
 	GLuint texID2 = loadTexture("./textures/jojo.jpg");
+	GLuint texID3 = loadTexture("./textures/Player/player-idle-1.png");
 
 	Object bg;
 	bg.initialize();
@@ -118,6 +119,14 @@ int main()
 	obj2.setAngle(glm::radians(45.0f));
 	obj2.setTexture(texID2);
 	obj2.setShader(shader);
+
+	Object obj3;
+	obj3.initialize();
+	obj3.setPosition(glm::vec3(200, 300, 0));
+	obj3.setDimensions(glm::vec3(74, 64, 1.0));
+	obj3.setAngle(glm::radians(0.0f));
+	obj3.setTexture(texID3);
+	obj3.setShader(shader);
 
 	vector <Object> objects;
 
@@ -232,18 +241,28 @@ int main()
 		//float newRot = (float)glfwGetTime;
 		//objects[0].setAngle(newRot);
 
+
+
 		for (int i = 0; i < objects.size(); i++)
 		{
 			objects[i].update();
 			objects[i].draw();
 		}
 
+		obj3.update();
+		obj3.draw();
+
+		obj3.setPosition(glm::vec3(obj3.getPosition().x + 1, obj3.getPosition().y, obj3.getPosition().z));
+		//cout << obj3.getPosition().x << endl;
+
+
+
 		// Troca os buffers da tela
 		glfwSwapBuffers(window);
 	}
 	// Pede pra OpenGL desalocar os buffers
 	glDeleteVertexArrays(1, &VAO);
-	// Finaliza a execução da GLFW, limpando os recursos alocados por ela
+	// Finaliza a execução da GLFW, limpando os recursos alocados por elav
 	glfwTerminate();
 	return 0;
 }
