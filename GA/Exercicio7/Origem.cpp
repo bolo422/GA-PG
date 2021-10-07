@@ -45,7 +45,9 @@ GLuint createSprite();
 
 //Timers
 //Timer jumpAgain(70);
-Timer turn(150); int movimento = 3;
+//Timer turn(150); int movimento = 1;
+Timer turnMG(1600); int movimentoMG = 1;
+Timer turnBG(8000); int movimentoBG = 1;
 
 
 
@@ -117,9 +119,11 @@ int main()
 	//GLuint shaderID = setupShader();
 	Shader* shader = new Shader("./shaders/transforms.vs", "./shaders/transforms.fs");
 
-	GLuint texID = loadTexture("./textures/coracao.png");
-	GLuint texID2 = loadTexture("./textures/jojo.jpg");
+	GLuint texID1 = loadTexture("./textures/Background/middleground.png");
+	GLuint texID2 = loadTexture("./textures/Background/background.png");
 	GLuint texID3 = loadTexture("./textures/Player/player-idle-1.png");
+	GLuint texID4 = loadTexture("./textures/Background/tileset.png");
+
 
 	Object bg;
 	bg.initialize();
@@ -128,13 +132,26 @@ int main()
 	bg.setTexture(texID2);
 	bg.setShader(shader);
 
-	Object obj2;
-	obj2.initialize();
-	obj2.setPosition(glm::vec3(200, 300, 0));
-	obj2.setDimensions(glm::vec3(250, 250, 1.0));
-	obj2.setAngle(glm::radians(45.0f));
-	obj2.setTexture(texID2);
-	obj2.setShader(shader);
+	Object bg2;
+	bg2.initialize();
+	bg2.setPosition(glm::vec3(1200, 300, 0));
+	bg2.setDimensions(glm::vec3(800, 600, 1.0));
+	bg2.setTexture(texID2);
+	bg2.setShader(shader);
+
+	Object mg;
+	mg.initialize();
+	mg.setPosition(glm::vec3(400, 300, 0));
+	mg.setDimensions(glm::vec3(800, 600, 1.0));
+	mg.setTexture(texID1);
+	mg.setShader(shader);
+
+	Object mg2;
+	mg2.initialize();
+	mg2.setPosition(glm::vec3(1200, 300, 0));
+	mg2.setDimensions(glm::vec3(800, 600, 1.0));
+	mg2.setTexture(texID1);
+	mg2.setShader(shader);
 
 
 	player.initialize();
@@ -145,27 +162,7 @@ int main()
 	player.setShader(shader);
 	//player.jump(true);
 
-	vector <Object> objects;
 
-	float xini = 100;
-	float yini = 100;
-
-	float objW = 100;
-	float objH = 100;
-
-	for (int i = 0; i < 3; i++)
-	{
-		for (int j = 0; j < 4; j++)
-		{
-			Object obj;
-			obj.initialize();
-			obj.setPosition(glm::vec3(xini + j*objW, yini + i*objH, 0));
-			obj.setDimensions(glm::vec3(objW, objH, 1.0));
-			obj.setTexture(texID);
-			obj.setShader(shader);
-			objects.push_back(obj);
-		}
-	}
 
 	// Gerando um buffer simples, com a geometria de um triângulo
 	//GLuint VAO = setupGeometry();
@@ -221,6 +218,7 @@ int main()
 		model = glm::translate(model, glm::vec3(400, 300, 0.0));
 		model = glm::rotate(model, (GLfloat)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::scale(model, glm::vec3(200, 200, 1.0));
+		
 
 		//glm::radians(45.0f)
 
@@ -252,19 +250,15 @@ int main()
 		bg.update();
 		bg.draw();
 
-		//obj2.update();
-		//obj2.draw();
+		bg2.update();
+		bg2.draw();
 
-		//float newRot = (float)glfwGetTime;
-		//objects[0].setAngle(newRot);
+		mg.update();
+		mg.draw();
 
+		mg2.update();
+		mg2.draw();
 
-
-		for (int i = 0; i < objects.size(); i++)
-		{
-			objects[i].update();
-			objects[i].draw();
-		}
 
 		player.update();
 		player.draw();
@@ -279,14 +273,48 @@ int main()
 		}
 
 		
+		//middleground se movendo
+		mg.addPositionX(movimentoMG * -0.5);
+		mg2.addPositionX(movimentoMG * -0.5);
+		
+		if (turnMG.over()) {
 
-		player.addPositionX(movimento);
+			mg.setPosition(400, 300, 0);
+			mg.addPositionX(movimentoMG);
+
+			mg2.setPosition(1200, 300, 0);
+			mg2.addPositionX(movimentoMG);
+
+
+			turnMG.restart();
+		}
+
+		//background se movendo
+		bg.addPositionX(movimentoBG * -0.1);
+		bg2.addPositionX(movimentoBG * -0.1);
+
+		if (turnBG.over()) {
+
+			bg.setPosition(400, 300, 0);
+			bg.addPositionX(movimentoBG);
+
+			bg2.setPosition(1200, 300, 0);
+			bg2.addPositionX(movimentoBG);
+
+			turnBG.restart();
+		}
+
+		
+
+		
+
+
+		/*/player.addPositionX(movimento);
 
 		if (turn.over()) {
 			movimento = movimento * -1;
 			turn.restart();
-		}
-
+		}*/
 		
 
 		/*if (jumpAgain.over()) {
@@ -326,7 +354,9 @@ int main()
 
 	
 		//jumpAgain.tick();
-		turn.tick();
+		//turn.tick();
+		turnMG.tick();
+		turnBG.tick();
 
 
 
