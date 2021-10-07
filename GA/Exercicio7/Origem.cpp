@@ -42,8 +42,9 @@ int setupGeometry();
 int loadTexture(string path);
 GLuint createSprite();
 
+
 //Timers
-Timer jumpAgain(70);
+//Timer jumpAgain(70);
 Timer turn(150); int movimento = 3;
 
 
@@ -60,7 +61,10 @@ int nvertices = 100 + 1 + 1; //+ centro +cópia do 1
 
 using namespace std;
 
+Object player;
 
+bool holding = false;
+float jumpForce = 0;
 
 // Função MAIN
 int main()
@@ -132,14 +136,14 @@ int main()
 	obj2.setTexture(texID2);
 	obj2.setShader(shader);
 
-	Object obj3;
-	obj3.initialize();
-	obj3.setPosition(glm::vec3(200, 200, 0));
-	obj3.setDimensions(glm::vec3(74, 64, 1.0));
-	obj3.setAngle(glm::radians(0.0f));
-	obj3.setTexture(texID3);
-	obj3.setShader(shader);
-	obj3.jump(true);
+
+	player.initialize();
+	player.setPosition(glm::vec3(200, 200, 0));
+	player.setDimensions(glm::vec3(74, 64, 1.0));
+	player.setAngle(glm::radians(0.0f));
+	player.setTexture(texID3);
+	player.setShader(shader);
+	//player.jump(true);
 
 	vector <Object> objects;
 
@@ -262,58 +266,66 @@ int main()
 			objects[i].draw();
 		}
 
-		obj3.update();
-		obj3.draw();
+		player.update();
+		player.draw();
 
 		
-		obj3.jump(40.0f);
+		if (holding) {
+			jumpForce += 1;
+		}
+		else {
+			player.jump(jumpForce);
+			jumpForce = 0;
+		}
 
 		
 
-		obj3.addPositionX(movimento);
+		player.addPositionX(movimento);
 
 		if (turn.over()) {
 			movimento = movimento * -1;
 			turn.restart();
 		}
 
-		if (jumpAgain.over()) {
-			obj3.jump(true);
+		
+
+		/*if (jumpAgain.over()) {
+			player.jump(true);
 			jumpAgain.restart();
-		}
+		}*/
 
 		/*timer++;
 		if (timer >= 80) {
-			obj3.jump(true);
+			player.jump(true);
 			timer = 0;
 		}*/
-		//if (obj3.getPosition().y < 400 && !obj3.caindo) {
-		//	obj3.addPositionY(3);
-		//	if (obj3.getPosition().y >= 400)
+		//if (player.getPosition().y < 400 && !player.caindo) {
+		//	player.addPositionY(3);
+		//	if (player.getPosition().y >= 400)
 		//	{
-		//		obj3.caindo = true;
+		//		player.caindo = true;
 		//	}
 		//}
-		//if (obj3.getPosition().y > 200 && obj3.caindo) {
-		//	obj3.removePositionY(3);
-		//	if (obj3.getPosition().y <= 200)
+		//if (player.getPosition().y > 200 && player.caindo) {
+		//	player.removePositionY(3);
+		//	if (player.getPosition().y <= 200)
 		//	{
-		//		obj3.caindo = false;
+		//		player.caindo = false;
 		//	}
 		//}
 		
-		/*if (obj3.getPosition().y > 400 && !obj3.caindo) {
-			obj3.caindo = true;
+		/*if (player.getPosition().y > 400 && !player.caindo) {
+			player.caindo = true;
 		}*/
 
 
 
 
-		//obj3.setPosition(glm::vec3(obj3.getPosition().x + 1, obj3.getPosition().y, obj3.getPosition().z));
-		//cout << obj3.getPosition().x << endl;
+		//player.setPosition(glm::vec3(player.getPosition().x + 1, player.getPosition().y, player.getPosition().z));
+		//cout << player.getPosition().x << endl;
 
 	
-		jumpAgain.tick();
+		//jumpAgain.tick();
 		turn.tick();
 
 
@@ -335,6 +347,16 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 {
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
+
+	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+		holding = true;
+
+	if (key == GLFW_KEY_SPACE && action == GLFW_RELEASE) {
+		holding = false;
+		player.jump(true);
+	}
+
+
 }
 
 // Esta função está bastante harcoded - objetivo é criar os buffers que armazenam a 
@@ -504,6 +526,8 @@ GLuint createSprite()
 
 	return VAO;
 }
+
+
 
 
 

@@ -86,6 +86,10 @@ void Object::draw()
 void Object::jump(float force)
 {
 	if (jumping) {
+
+		if (force > 120)
+			force = 120;
+
 		jumpHeight = force + position.y;
 		jumping = false;
 		jumped = true;

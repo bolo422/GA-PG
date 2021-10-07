@@ -37,6 +37,9 @@ public:
 	//Decremento de valor de posição
 	inline void removePositionX(float x) { position = glm::vec3(position.x - x, position.y, position.z); }
 	inline void removePositionY(float y) { position = glm::vec3(position.x, position.y - y, position.z); }
+
+	//Verifica se está no chçai
+	inline bool grounded() { if (position.y <= ground) { return true; } else { return false; } }
 	
 	//Get posição
 	inline glm::vec3 getPosition() { return position; }
