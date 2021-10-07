@@ -48,6 +48,12 @@ public:
 	inline void setTexture(GLuint _texID) { texID = _texID; }
 	//Setar shader
 	inline void setShader(Shader* _shader) { shader = _shader; }
+
+	//Pular
+	void jump(float force);
+	inline void jump(bool _jumping) { jumping = _jumping; }
+
+	
 	
 protected:
 	//Setar rotação
@@ -70,6 +76,13 @@ protected:
 	float angle;
 
 	bool first;
+
+	bool jumping = false;
+	bool falling = false;
+	bool jumped = false;
+
+	float jumpHeight = 0;
+	const int ground = 200;
 	
 };
 

@@ -83,6 +83,30 @@ void Object::draw()
 	glBindVertexArray(0);
 }
 
+void Object::jump(float force)
+{
+	if (jumping) {
+		jumpHeight = force + position.y;
+		jumping = false;
+		jumped = true;
+	}
+
+	if (!falling && jumped && position.y < jumpHeight) {
+		addPositionY(2);
+		if (position.y >= jumpHeight) {
+			falling = true;
+			jumped = false;
+		}
+	}
+	else if (falling && position.y > ground) {
+		removePositionY(2);
+		if (position.y <= ground) {
+			falling = false;
+		}
+	}
+	
+}
+
 void Object::setRotation(float _angle, glm::vec3 _axis, bool _reset)
 {
 	if (_reset) {

@@ -32,6 +32,7 @@ using namespace std;
 // Shaders
 #include "Shader.h"
 #include "Object.h"
+#include "Timer.h"
 
 // Protótipo da função de callback de teclado
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
@@ -41,6 +42,15 @@ int setupGeometry();
 int loadTexture(string path);
 GLuint createSprite();
 
+//Timers
+Timer jumpAgain(70);
+Timer turn(150); int movimento = 3;
+
+
+
+
+
+
 // Dimensões da janela (pode ser alterado em tempo de execução)
 const GLuint WIDTH = 800, HEIGHT = 600;
 
@@ -49,6 +59,8 @@ const float pi = 3.14159;
 int nvertices = 100 + 1 + 1; //+ centro +cópia do 1
 
 using namespace std;
+
+
 
 // Função MAIN
 int main()
@@ -122,11 +134,12 @@ int main()
 
 	Object obj3;
 	obj3.initialize();
-	obj3.setPosition(glm::vec3(200, 300, 0));
+	obj3.setPosition(glm::vec3(200, 200, 0));
 	obj3.setDimensions(glm::vec3(74, 64, 1.0));
 	obj3.setAngle(glm::radians(0.0f));
 	obj3.setTexture(texID3);
 	obj3.setShader(shader);
+	obj3.jump(true);
 
 	vector <Object> objects;
 
@@ -252,9 +265,56 @@ int main()
 		obj3.update();
 		obj3.draw();
 
-		obj3.addPositionX(1);
+		
+		obj3.jump(40.0f);
+
+		
+
+		obj3.addPositionX(movimento);
+
+		if (turn.over()) {
+			movimento = movimento * -1;
+			turn.restart();
+		}
+
+		if (jumpAgain.over()) {
+			obj3.jump(true);
+			jumpAgain.restart();
+		}
+
+		/*timer++;
+		if (timer >= 80) {
+			obj3.jump(true);
+			timer = 0;
+		}*/
+		//if (obj3.getPosition().y < 400 && !obj3.caindo) {
+		//	obj3.addPositionY(3);
+		//	if (obj3.getPosition().y >= 400)
+		//	{
+		//		obj3.caindo = true;
+		//	}
+		//}
+		//if (obj3.getPosition().y > 200 && obj3.caindo) {
+		//	obj3.removePositionY(3);
+		//	if (obj3.getPosition().y <= 200)
+		//	{
+		//		obj3.caindo = false;
+		//	}
+		//}
+		
+		/*if (obj3.getPosition().y > 400 && !obj3.caindo) {
+			obj3.caindo = true;
+		}*/
+
+
+
+
 		//obj3.setPosition(glm::vec3(obj3.getPosition().x + 1, obj3.getPosition().y, obj3.getPosition().z));
 		//cout << obj3.getPosition().x << endl;
+
+	
+		jumpAgain.tick();
+		turn.tick();
 
 
 
@@ -444,4 +504,6 @@ GLuint createSprite()
 
 	return VAO;
 }
+
+
 
