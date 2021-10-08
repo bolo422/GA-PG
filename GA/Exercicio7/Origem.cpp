@@ -47,28 +47,12 @@ GLuint createSprite();
 
 
 //Timers
-<<<<<<< Updated upstream
-//Timer jumpAgain(70);
-//Timer turn(150); int movimento = 1;
-Timer turnMG(1600); int movimentoMG = 1;
-Timer turnBG(8000); int movimentoBG = 1;
-Timer turnG(800); int movimentoG = 1;
-=======
 Timer speedTimer(1500);
->>>>>>> Stashed changes
 
-
-
-
-<<<<<<< Updated upstream
-// DimensÃµes da janela (pode ser alterado em tempo de execuÃ§Ã£o)
-const GLuint WIDTH = 800, HEIGHT = 600;
-=======
 
 
 // Dimensões da janela (pode ser alterado em tempo de execução)
 const GLuint WIDTH = 1024, HEIGHT = 768;
->>>>>>> Stashed changes
 
 const float pi = 3.14159;
 
@@ -169,20 +153,20 @@ int main()
 
 	Object ground;
 	ground.initialize();
-	ground.setPosition(glm::vec3(400, 20, 0));
-	ground.setDimensions(glm::vec3(800, 80, 1.0));
+	ground.setPosition(glm::vec3(WIDTH / 2, 15, 0));
+	ground.setDimensions(glm::vec3(1024, 30, 1.0));
 	ground.setTexture(texID4);
 	ground.setShader(shader);
 
 	Object ground2;
 	ground2.initialize();
-	ground2.setPosition(glm::vec3(1200, 20, 0));
-	ground2.setDimensions(glm::vec3(800, 80, 1.0));
+	ground2.setPosition(glm::vec3(WIDTH * 1.5, 15, 0));
+	ground2.setDimensions(glm::vec3(1024, 30, 1.0));
 	ground2.setTexture(texID4);
 	ground2.setShader(shader);
 
 	player.initialize();
-	player.setPosition(glm::vec3(200, 100, 0));
+	player.setPosition(glm::vec3(200, 62, 0));
 	player.setDimensions(glm::vec3(74, 64, 1.0));
 	player.setAngle(glm::radians(0.0f));
 	player.setTexture(texID3);
@@ -286,20 +270,12 @@ int main()
 		mg2.update();
 		mg2.draw();
 
-<<<<<<< Updated upstream
 		ground.update();
 		ground.draw();
 
 		ground2.update();
 		ground2.draw();
-=======
-		
 
-		
->>>>>>> Stashed changes
-
-
-		player.setPositionX(0);
 		player.update();
 		player.draw();
 
@@ -362,79 +338,35 @@ int main()
 			}
 		}
 
-<<<<<<< Updated upstream
-		//ground se movendo
-		ground.addPositionX(movimentoG * -1);
-		ground2.addPositionX(movimentoG * -1);
+		//Movimento Ground
+		{
+			ground.addPositionX(-3 - speed);
+			ground2.addPositionX(-3 - speed);
 
-		if (turnG.over()) {
+			if (ground.getPosition().x <= -512) {
+				ground.setPositionX(WIDTH * 1.5);
+			}
 
-			ground.setPosition(400, 20, 0);
-			ground.addPositionX(movimentoG);
+			if (ground2.getPosition().x <= -512) {
+				ground2.setPositionX(WIDTH * 1.5);
+			}
 
-			ground2.setPosition(1200, 20, 0);
-			ground2.addPositionX(movimentoG);
-
-			turnG.restart();
+			if (ground.getPosition().x - ground2.getPosition().x != -1024 && ground.getPosition().x < ground2.getPosition().x)
+			{
+				ground.setPositionX(512);
+				ground2.setPositionX(1536);
+			}
+			else if (ground2.getPosition().x - ground.getPosition().x != -1024 && ground2.getPosition().x < ground.getPosition().x)
+			{
+				ground.setPositionX(512);
+				ground2.setPositionX(1536);
+			}
 		}
 
-		
 
 
-		/*/player.addPositionX(movimento);
-
-		if (turn.over()) {
-			movimento = movimento * -1;
-			turn.restart();
-		}*/
-		
-
-		/*if (jumpAgain.over()) {
-			player.jump(true);
-			jumpAgain.restart();
-		}*/
-
-		/*timer++;
-		if (timer >= 80) {
-			player.jump(true);
-			timer = 0;
-		}*/
-		//if (player.getPosition().y < 400 && !player.caindo) {
-		//	player.addPositionY(3);
-		//	if (player.getPosition().y >= 400)
-		//	{
-		//		player.caindo = true;
-		//	}
-		//}
-		//if (player.getPosition().y > 200 && player.caindo) {
-		//	player.removePositionY(3);
-		//	if (player.getPosition().y <= 200)
-		//	{
-		//		player.caindo = false;
-		//	}
-		//}
-		
-		/*if (player.getPosition().y > 400 && !player.caindo) {
-			player.caindo = true;
-		}*/
-
-
-
-
-		//player.setPosition(glm::vec3(player.getPosition().x + 1, player.getPosition().y, player.getPosition().z));
-		//cout << player.getPosition().x << endl;
-
-	
-		//jumpAgain.tick();
-		//turn.tick();
-		turnMG.tick();
-		turnBG.tick();
-		turnG.tick();
-=======
 
 		speedTimer.tick();
->>>>>>> Stashed changes
-
 		if (speedTimer.over()) {
 			speed++;
 			speedTimer.restart(speedTimer.getInitialTime() * 0.95);
@@ -460,10 +392,10 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
 
-	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS && !player.getFalling() && !player.getJumped())
 		holding = true;
 
-	if (key == GLFW_KEY_SPACE && action == GLFW_RELEASE) {
+	if (key == GLFW_KEY_SPACE && action == GLFW_RELEASE && !player.getFalling() && !player.getJumped()) {
 		holding = false;
 		player.jump(true);
 	}

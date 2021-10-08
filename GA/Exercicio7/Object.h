@@ -56,7 +56,8 @@ public:
 	void jump(float force, float speed);
 	inline void jump(bool _jumping) { jumping = _jumping; }
 
-	
+	inline bool getFalling() { return falling; }
+	inline bool getJumped() { return jumped; }
 	
 protected:
 	//Setar rotação
@@ -85,7 +86,7 @@ protected:
 	bool jumped = false;
 
 	float jumpHeight = 0;
-	const int ground = 200;
+	const int ground = 62; //Altura do chão + alturado do player/2
 	
 };
 
