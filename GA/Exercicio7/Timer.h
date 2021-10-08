@@ -19,6 +19,7 @@ public:
 
 	//Timer que cronometra conforme uso da função tick(),
 	Timer(int initial_time) { initialTime = initial_time; remainingTime = initial_time; }
+	Timer() {}
 	~Timer() {}
 
 	//Seta o tempo inicial - Não é necessário sempre, pois já foi colocado no construtor

@@ -18,6 +18,7 @@ class Object
 public:
 
 	Object();
+	Object(glm::vec3 _position, glm::vec3 _scale, GLuint _texID, Shader* _shader);
 	~Object();
 
 	//equivalente ao setupGeometry
@@ -38,8 +39,7 @@ public:
 	inline void removePositionX(float x) { position = glm::vec3(position.x - x, position.y, position.z); }
 	inline void removePositionY(float y) { position = glm::vec3(position.x, position.y - y, position.z); }
 
-	//Verifica se está no chçai
-	inline bool grounded() { if (position.y <= ground) { return true; } else { return false; } }
+
 	
 	//Get posição
 	inline glm::vec3 getPosition() { return position; }
@@ -52,12 +52,7 @@ public:
 	//Setar shader
 	inline void setShader(Shader* _shader) { shader = _shader; }
 
-	//Pular
-	void jump(float force, float speed);
-	inline void jump(bool _jumping) { jumping = _jumping; }
 
-	inline bool getFalling() { return falling; }
-	inline bool getJumped() { return jumped; }
 	
 protected:
 	//Setar rotação
@@ -81,12 +76,7 @@ protected:
 
 	bool first;
 
-	bool jumping = false;
-	bool falling = false;
-	bool jumped = false;
 
-	float jumpHeight = 0;
-	const int ground = 62; //Altura do chão + alturado do player/2
 	
 };
 

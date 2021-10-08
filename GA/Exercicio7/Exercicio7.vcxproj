@@ -144,13 +144,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\glad.c" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="Origem.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="stb_image.h" />
     <ClInclude Include="Timer.h" />
