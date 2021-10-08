@@ -83,7 +83,7 @@ void Object::draw()
 	glBindVertexArray(0);
 }
 
-void Object::jump(float force)
+void Object::jump(float force, float speed)
 {
 	if (jumping) {
 
@@ -96,14 +96,14 @@ void Object::jump(float force)
 	}
 
 	if (!falling && jumped && position.y < jumpHeight) {
-		addPositionY(2);
+		addPositionY(2 * speed);
 		if (position.y >= jumpHeight) {
 			falling = true;
 			jumped = false;
 		}
 	}
 	else if (falling && position.y > ground) {
-		removePositionY(2);
+		removePositionY(2 * speed);
 		if (position.y <= ground) {
 			falling = false;
 		}

@@ -53,7 +53,7 @@ public:
 	inline void setShader(Shader* _shader) { shader = _shader; }
 
 	//Pular
-	void jump(float force);
+	void jump(float force, float speed);
 	inline void jump(bool _jumping) { jumping = _jumping; }
 
 	

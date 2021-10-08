@@ -27,6 +27,12 @@ public:
 	//Seta o tempo restante - Não é necessário sempre, pois isto é calculado dentro de outras funções
 	inline void setRemainingTime(int time) { remainingTime = time; }
 
+	//Retorna InitialTime
+	inline int getInitialTime() { return initialTime; }
+
+	//Retorna RemainingTime
+	inline int getRemainingTime() { return remainingTime; }
+
 	//Função principal, deve ser chamada sempre que quiser passar 1 unidade de tempo
 	inline void tick() { if (!over()) { remainingTime--; } }
 

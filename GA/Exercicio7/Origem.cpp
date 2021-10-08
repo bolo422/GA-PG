@@ -11,6 +11,8 @@
 #include <string>
 #include <assert.h>
 #include <cmath>
+#include <chrono>
+#include <ctime> 
 
 using namespace std;
 
@@ -43,18 +45,30 @@ int loadTexture(string path);
 GLuint createSprite();
 
 
+
 //Timers
+<<<<<<< Updated upstream
 //Timer jumpAgain(70);
 //Timer turn(150); int movimento = 1;
 Timer turnMG(1600); int movimentoMG = 1;
 Timer turnBG(8000); int movimentoBG = 1;
 Timer turnG(800); int movimentoG = 1;
+=======
+Timer speedTimer(1500);
+>>>>>>> Stashed changes
 
 
 
 
+<<<<<<< Updated upstream
 // DimensÃµes da janela (pode ser alterado em tempo de execuÃ§Ã£o)
 const GLuint WIDTH = 800, HEIGHT = 600;
+=======
+
+
+// Dimensões da janela (pode ser alterado em tempo de execução)
+const GLuint WIDTH = 1024, HEIGHT = 768;
+>>>>>>> Stashed changes
 
 const float pi = 3.14159;
 
@@ -66,6 +80,7 @@ Object player;
 
 bool holding = false;
 float jumpForce = 0;
+float speed = 0;
 
 // FunÃ§Ã£o MAIN
 int main()
@@ -126,29 +141,29 @@ int main()
 
 	Object bg;
 	bg.initialize();
-	bg.setPosition(glm::vec3(400, 300, 0));
-	bg.setDimensions(glm::vec3(800, 600, 1.0));
+	bg.setPosition(glm::vec3(WIDTH / 2, HEIGHT / 2, 0));
+	bg.setDimensions(glm::vec3(1024, 768, 1.0));
 	bg.setTexture(texID2);
 	bg.setShader(shader);
 
 	Object bg2;
 	bg2.initialize();
-	bg2.setPosition(glm::vec3(1200, 300, 0));
-	bg2.setDimensions(glm::vec3(800, 600, 1.0));
+	bg2.setPosition(glm::vec3(WIDTH * 1.5, HEIGHT / 2, 0));
+	bg2.setDimensions(glm::vec3(1024, 768, 1.0));
 	bg2.setTexture(texID2);
 	bg2.setShader(shader);
 
 	Object mg;
 	mg.initialize();
-	mg.setPosition(glm::vec3(400, 300, 0));
-	mg.setDimensions(glm::vec3(800, 600, 1.0));
+	mg.setPosition(glm::vec3(WIDTH/2, HEIGHT/2, 0));
+	mg.setDimensions(glm::vec3(1024, 768, 1.0));
 	mg.setTexture(texID1);
 	mg.setShader(shader);
 
 	Object mg2;
 	mg2.initialize();
-	mg2.setPosition(glm::vec3(1200, 300, 0));
-	mg2.setDimensions(glm::vec3(800, 600, 1.0));
+	mg2.setPosition(glm::vec3(WIDTH * 1.5, HEIGHT/2, 0));
+	mg2.setDimensions(glm::vec3(1024, 768, 1.0));
 	mg2.setTexture(texID1);
 	mg2.setShader(shader);
 
@@ -189,7 +204,7 @@ int main()
 	assert(colorLoc > -1);*/
 
 	glm::mat4 projection = glm::mat4(1);
-	double xmin=0.0, xmax=800.0, ymin=0.0, ymax=600.0;
+	double xmin=0.0, xmax=1024.0, ymin=0.0, ymax=768.0;
 
 	projection = glm::ortho(xmin, xmax, ymin, ymax, -1.0, 1.0);
 
@@ -271,57 +286,83 @@ int main()
 		mg2.update();
 		mg2.draw();
 
+<<<<<<< Updated upstream
 		ground.update();
 		ground.draw();
 
 		ground2.update();
 		ground2.draw();
+=======
+		
+
+		
+>>>>>>> Stashed changes
 
 
+		player.setPositionX(0);
 		player.update();
 		player.draw();
 
 		
 		if (holding) {
-			jumpForce += 1;
+			jumpForce += 4;
 		}
 		else {
-			player.jump(jumpForce);
+			player.jump(jumpForce, 1);
 			jumpForce = 0;
 		}
 
-		
-		//middleground se movendo
-		mg.addPositionX(movimentoMG * -0.5);
-		mg2.addPositionX(movimentoMG * -0.5);
-		
-		if (turnMG.over()) {
+		//Movimento MG
+		{
+			mg.addPositionX(-2 - speed);
+			mg2.addPositionX(-2 - speed);
 
-			mg.setPosition(400, 300, 0);
-			mg.addPositionX(movimentoMG);
+			if (mg.getPosition().x <= -512) {
+				mg.setPositionX(WIDTH * 1.5);
+			}
 
-			mg2.setPosition(1200, 300, 0);
-			mg2.addPositionX(movimentoMG);
+			if (mg2.getPosition().x <= -512) {
+				mg2.setPositionX(WIDTH * 1.5);
+			}
 
-
-			turnMG.restart();
+			if (mg.getPosition().x - mg2.getPosition().x != -1024 && mg.getPosition().x < mg2.getPosition().x)
+			{
+				mg.setPositionX(512);
+				mg2.setPositionX(1536);
+			}
+			else if (mg2.getPosition().x - mg.getPosition().x != -1024 && mg2.getPosition().x < mg.getPosition().x)
+			{
+				mg.setPositionX(512);
+				mg2.setPositionX(1536);
+			}
 		}
 
-		//background se movendo
-		bg.addPositionX(movimentoBG * -0.1);
-		bg2.addPositionX(movimentoBG * -0.1);
+		//Movimento BG
+		{
+			bg.addPositionX(-0.5 - speed);
+			bg2.addPositionX(-0.5 - speed);
 
-		if (turnBG.over()) {
+			if (bg.getPosition().x <= -512) {
+				bg.setPositionX(WIDTH * 1.5);
+			}
 
-			bg.setPosition(400, 300, 0);
-			bg.addPositionX(movimentoBG);
+			if (bg2.getPosition().x <= -512) {
+				bg2.setPositionX(WIDTH * 1.5);
+			}
 
-			bg2.setPosition(1200, 300, 0);
-			bg2.addPositionX(movimentoBG);
-
-			turnBG.restart();
+			if (bg.getPosition().x - bg2.getPosition().x != -1024 && bg.getPosition().x < bg2.getPosition().x)
+			{
+				bg.setPositionX(512);
+				bg2.setPositionX(1536);
+			}
+			else if (bg2.getPosition().x - bg.getPosition().x != -1024 && bg2.getPosition().x < bg.getPosition().x)
+			{
+				bg.setPositionX(512);
+				bg2.setPositionX(1536);
+			}
 		}
 
+<<<<<<< Updated upstream
 		//ground se movendo
 		ground.addPositionX(movimentoG * -1);
 		ground2.addPositionX(movimentoG * -1);
@@ -389,7 +430,16 @@ int main()
 		turnMG.tick();
 		turnBG.tick();
 		turnG.tick();
+=======
 
+		speedTimer.tick();
+>>>>>>> Stashed changes
+
+		if (speedTimer.over()) {
+			speed++;
+			speedTimer.restart(speedTimer.getInitialTime() * 0.95);
+			cout << "Incremento de tempo : Speed = " << speed << " Ticks: " << speedTimer.getRemainingTime() << endl;
+		}
 
 
 		// Troca os buffers da tela
