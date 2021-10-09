@@ -75,30 +75,52 @@ void GameManager::assignTextures()
 void GameManager::createObjects()
 {
 	//TEXTURES
-	texID1 = loadTexture("./textures/Background/middleground.png");
-	texID2 = loadTexture("./textures/Background/background.png");
-	texID3 = loadTexture("./textures/Player/player-idle-1.png");
-	texID4 = loadTexture("./textures/Background/ground.png");
+	//texID = loadTexture("./textures/Background/middleground.png");
+	//texID = loadTexture("./textures/Background/background.png");
+	//texID = loadTexture("./textures/Player/player-idle-1.png");
+	//texID = loadTexture("./textures/Background/ground.png");
+	//texID = loadTexture("./textures/textures/Enemy/bee-1.png");
 
 
 	//Background
-	bg = Object(glm::vec3(WIDTH / 2, HEIGHT / 2, 0), glm::vec3(1024, 768, 1.0), texID2, shader);
-	bg2 = Object(glm::vec3(WIDTH * 1.5, HEIGHT / 2, 0), glm::vec3(1024, 768, 1.0), texID2, shader);
-	
+	Object *obj = new Object;
+	texID = loadTexture("./textures/Background/background.png");
+	obj = new Object("bg", glm::vec3(WIDTH / 2, HEIGHT / 2, 0), glm::vec3(1024, 768, 1.0), texID, shader);
+	objects.push_back(obj);
+	obj = new Object("bg", glm::vec3(WIDTH * 1.5, HEIGHT / 2, 0), glm::vec3(1024, 768, 1.0), texID, shader);
+	objects.push_back(obj);
+
+
 	//MiddleGround
-	mg = Object(glm::vec3(WIDTH / 2, HEIGHT / 2, 0), glm::vec3(1024, 768, 1.0), texID1, shader);
-	mg2 = Object(glm::vec3(WIDTH * 1.5, HEIGHT / 2, 0), glm::vec3(1024, 768, 1.0), texID1, shader);
+	texID = loadTexture("./textures/Background/middleground.png");
+	obj = new Object("mg", glm::vec3(WIDTH / 2, HEIGHT / 2, 0), glm::vec3(1024, 768, 1.0), texID, shader);
+	objects.push_back(obj);
+	obj = new Object("mg", glm::vec3(WIDTH * 1.5, HEIGHT / 2, 0), glm::vec3(1024, 768, 1.0), texID, shader);
+	objects.push_back(obj);
 
 	//Ground
-	ground = Object(glm::vec3(WIDTH / 2, 15, 0), glm::vec3(1024, 30, 1.0), texID4, shader);
-	ground2 = Object(glm::vec3(WIDTH * 1.5, 15, 0), glm::vec3(1024, 30, 1.0), texID4, shader);
+	texID = loadTexture("./textures/Background/ground.png");
+	obj = new Object("ground", glm::vec3(WIDTH / 2, 15, 0), glm::vec3(1024, 30, 1.0), texID, shader);
+	objects.push_back(obj);
+	obj = new  Object("ground", glm::vec3(WIDTH * 1.5, 15, 0), glm::vec3(1024, 30, 1.0), texID, shader);
+	objects.push_back(obj);
+
+	//Enemytest
+	/*texID = loadTexture("./textures/textures/Enemy/bee-1.png");
+	obj = new Object("enemy", glm::vec3(WIDTH / 2, 70, 0), glm::vec3(1024, 30, 1.0), texID, shader);
+	objects.push_back(obj);
+	obj = new Object("enemy", glm::vec3(WIDTH / 2, 70, 0), glm::vec3(1024, 30, 1.0), texID, shader);
+	objects.push_back(obj);*/
+	
 
 	//Player
+	texID = loadTexture("./textures/Player/player-idle-1.png");
 	player.initialize();
+	player.setTag("player");
 	player.setPosition(glm::vec3(200, 62, 0));
 	player.setDimensions(glm::vec3(74, 64, 1.0));
 	player.setAngle(glm::radians(0.0f));
-	player.setTexture(texID3);
+	player.setTexture(texID);
 	player.setShader(shader);
 }
 
@@ -112,26 +134,17 @@ void GameManager::run()
 		glUniformMatrix4fv(projLoc, 1, FALSE, glm::value_ptr(projection));
 
 
-		bg.update();
-		bg.draw();
+		for (int i = 0; i < objects.size(); i++)
+		{
+			objects[i]->update();
+			objects[i]->draw();
+		}
 
-		bg2.update();
-		bg2.draw();
-
-		mg.update();
-		mg.draw();
-
-		mg2.update();
-		mg2.draw();
-
-		ground.update();
-		ground.draw();
-
-		ground2.update();
-		ground2.draw();
 
 		player.update();
 		player.draw();
+
+		
 
 
 		// REFAZER O PULO
@@ -146,76 +159,76 @@ void GameManager::run()
 
 		//Movimento MG
 		{
-			mg.addPositionX(-2 - speed);
-			mg2.addPositionX(-2 - speed);
+			objects[2]->addPositionX(-2 - speed);
+			objects[3]->addPositionX(-2 - speed);
 
-			if (mg.getPosition().x <= -512) {
-				mg.setPositionX(WIDTH * 1.5);
+			if (objects[2]->getPosition().x <= -512) {
+				objects[2]->setPositionX(WIDTH * 1.5);
 			}
 
-			if (mg2.getPosition().x <= -512) {
-				mg2.setPositionX(WIDTH * 1.5);
+			if (objects[3]->getPosition().x <= -512) {
+				objects[3]->setPositionX(WIDTH * 1.5);
 			}
 
-			if (mg.getPosition().x - mg2.getPosition().x != -1024 && mg.getPosition().x < mg2.getPosition().x)
+			if (objects[2]->getPosition().x - objects[3]->getPosition().x != -1024 && objects[2]->getPosition().x < objects[3]->getPosition().x)
 			{
-				mg.setPositionX(512);
-				mg2.setPositionX(1536);
+				objects[2]->setPositionX(512);
+				objects[3]->setPositionX(1536);
 			}
-			else if (mg2.getPosition().x - mg.getPosition().x != -1024 && mg2.getPosition().x < mg.getPosition().x)
+			else if (objects[3]->getPosition().x - objects[2]->getPosition().x != -1024 && objects[3]->getPosition().x < objects[2]->getPosition().x)
 			{
-				mg.setPositionX(512);
-				mg2.setPositionX(1536);
+				objects[2]->setPositionX(512);
+				objects[3]->setPositionX(1536);
 			}
 		}
 
 		//Movimento BG
 		{
-			bg.addPositionX(-0.5 - speed);
-			bg2.addPositionX(-0.5 - speed);
+			objects[0]->addPositionX(-0.5 - speed);
+			objects[1]->addPositionX(-0.5 - speed);
 
-			if (bg.getPosition().x <= -512) {
-				bg.setPositionX(WIDTH * 1.5);
+			if (objects[0]->getPosition().x <= -512) {
+				objects[0]->setPositionX(WIDTH * 1.5);
 			}
 
-			if (bg2.getPosition().x <= -512) {
-				bg2.setPositionX(WIDTH * 1.5);
+			if (objects[1]->getPosition().x <= -512) {
+				objects[1]->setPositionX(WIDTH * 1.5);
 			}
 
-			if (bg.getPosition().x - bg2.getPosition().x != -1024 && bg.getPosition().x < bg2.getPosition().x)
+			if (objects[0]->getPosition().x - objects[1]->getPosition().x != -1024 && objects[0]->getPosition().x < objects[1]->getPosition().x)
 			{
-				bg.setPositionX(512);
-				bg2.setPositionX(1536);
+				objects[0]->setPositionX(512);
+				objects[1]->setPositionX(1536);
 			}
-			else if (bg2.getPosition().x - bg.getPosition().x != -1024 && bg2.getPosition().x < bg.getPosition().x)
+			else if (objects[1]->getPosition().x - objects[0]->getPosition().x != -1024 && objects[1]->getPosition().x < objects[0]->getPosition().x)
 			{
-				bg.setPositionX(512);
-				bg2.setPositionX(1536);
+				objects[0]->setPositionX(512);
+				objects[1]->setPositionX(1536);
 			}
 		}
 
 		//Movimento Ground
 		{
-			ground.addPositionX(-3 - speed);
-			ground2.addPositionX(-3 - speed);
+			objects[4]->addPositionX(-3 - speed);
+			objects[5]->addPositionX(-3 - speed);
 
-			if (ground.getPosition().x <= -512) {
-				ground.setPositionX(WIDTH * 1.5);
+			if (objects[4]->getPosition().x <= -512) {
+				objects[4]->setPositionX(WIDTH * 1.5);
 			}
 
-			if (ground2.getPosition().x <= -512) {
-				ground2.setPositionX(WIDTH * 1.5);
+			if (objects[5]->getPosition().x <= -512) {
+				objects[5]->setPositionX(WIDTH * 1.5);
 			}
 
-			if (ground.getPosition().x - ground2.getPosition().x != -1024 && ground.getPosition().x < ground2.getPosition().x)
+			if (objects[4]->getPosition().x - objects[5]->getPosition().x != -1024 && objects[4]->getPosition().x < objects[5]->getPosition().x)
 			{
-				ground.setPositionX(512);
-				ground2.setPositionX(1536);
+				objects[4]->setPositionX(512);
+				objects[5]->setPositionX(1536);
 			}
-			else if (ground2.getPosition().x - ground.getPosition().x != -1024 && ground2.getPosition().x < ground.getPosition().x)
+			else if (objects[5]->getPosition().x - objects[4]->getPosition().x != -1024 && objects[5]->getPosition().x < objects[4]->getPosition().x)
 			{
-				ground.setPositionX(512);
-				ground2.setPositionX(1536);
+				objects[4]->setPositionX(512);
+				objects[5]->setPositionX(1536);
 			}
 		}
 

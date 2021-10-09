@@ -163,6 +163,9 @@
     <None Include="shaders\transforms.fs" />
     <None Include="shaders\transforms.vs" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Lista Objects.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

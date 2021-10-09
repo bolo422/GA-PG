@@ -68,4 +68,7 @@
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="Lista Objects.txt" />
+  </ItemGroup>
 </Project>

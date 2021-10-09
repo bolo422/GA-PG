@@ -66,10 +66,13 @@ protected:
 	GLint projLoc = 0;
 
 	//Objects and Textures
-	GLuint texID1 = 0, texID2 = 0, texID3 = 0, texID4 = 0;
+	GLuint texID = 0;
+	vector <Object*> objects;
 	Object bg, bg2, mg, mg2, ground, ground2;
 	Player player;
 
+	//tests enemy
+	Object enemy1, enemy2;
 
 
 	const GLuint WIDTH = 1024, HEIGHT = 768;

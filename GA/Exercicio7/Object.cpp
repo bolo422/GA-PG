@@ -4,9 +4,10 @@ Object::Object()
 {
 }
 
-Object::Object(glm::vec3 _position, glm::vec3 _scale, GLuint _texID, Shader* _shader)
+Object::Object(string _tag, glm::vec3 _position, glm::vec3 _scale, GLuint _texID, Shader* _shader)
 {
 	initialize();
+	tag = _tag;
 	position = _position;
 	scale = _scale;
 	texID = _texID;

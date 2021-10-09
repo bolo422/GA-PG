@@ -18,7 +18,7 @@ class Object
 public:
 
 	Object();
-	Object(glm::vec3 _position, glm::vec3 _scale, GLuint _texID, Shader* _shader);
+	Object(string _tag, glm::vec3 _position, glm::vec3 _scale, GLuint _texID, Shader* _shader);
 	~Object();
 
 	//equivalente ao setupGeometry
@@ -52,9 +52,12 @@ public:
 	//Setar shader
 	inline void setShader(Shader* _shader) { shader = _shader; }
 
-
+	inline void setTag(string _tag) { tag = _tag; }
+	inline string getTag() { return tag; }
 	
 protected:
+	string tag;
+
 	//Setar rotação
 	void setRotation(float _angle, glm::vec3 _axis, bool _reset = false);
 	//Setar translação
