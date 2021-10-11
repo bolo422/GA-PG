@@ -68,11 +68,11 @@ protected:
 	//Objects and Textures
 	GLuint texID = 0;
 	vector <Object*> objects;
-	Object bg, bg2, mg, mg2, ground, ground2;
+	//Object bg, bg2, mg, mg2, ground, ground2;
 	Player player;
 
 	//tests enemy
-	Object enemy1, enemy2;
+	//Object enemy1, enemy2;
 
 
 	const GLuint WIDTH = 1024, HEIGHT = 768;
