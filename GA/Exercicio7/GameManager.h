@@ -6,6 +6,7 @@
 #include <cmath>
 #include <chrono>
 #include <ctime> 
+#include <cstdlib>
 
 // GLAD
 #include <glad/glad.h>
@@ -39,7 +40,7 @@ public:
 	void initialize();
 	void assignTextures();
 	void createObjects();
-	
+	void generateEnemy(Object enemy);
 
 	void run();
 	void finish();
@@ -68,12 +69,16 @@ protected:
 	//Objects and Textures
 	GLuint texID = 0;
 	vector <Object*> objects;
+	Object enemy;
 	//Object bg, bg2, mg, mg2, ground, ground2;
 	Player player;
 
 	//tests enemy
 	//Object enemy1, enemy2;
 
+	bool holding = false;
+	int jumpForce = 0;
+	int endpulo = 0;
 
 	const GLuint WIDTH = 1024, HEIGHT = 768;
 	const float pi = 3.14159;

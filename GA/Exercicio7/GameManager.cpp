@@ -1,6 +1,6 @@
 #include "GameManager.h"
 
-static bool keys[1024];
+int space = 0;
 
 void GameManager::initialize()
 {
@@ -106,12 +106,12 @@ void GameManager::createObjects()
 	objects.push_back(obj);
 
 	//Enemytest
-	/*texID = loadTexture("./textures/textures/Enemy/bee-1.png");
-	obj = new Object("enemy", glm::vec3(WIDTH / 2, 70, 0), glm::vec3(1024, 30, 1.0), texID, shader);
+	texID = loadTexture("./textures/Enemy/bee-1.png");
+	obj = new Object("enemy", glm::vec3(1500, 70, 0), glm::vec3(74, 64, 1.0), texID, shader);
 	objects.push_back(obj);
-	obj = new Object("enemy", glm::vec3(WIDTH / 2, 70, 0), glm::vec3(1024, 30, 1.0), texID, shader);
-	objects.push_back(obj);*/
-	
+
+	texID = loadTexture("./textures/Enemy/bee-1.png");
+	enemy = Object("enemy", glm::vec3(1500, 80, 0), glm::vec3(74, 64, 1.0), texID, shader);
 
 	//Player
 	texID = loadTexture("./textures/Player/player-idle-1.png");
@@ -122,6 +122,29 @@ void GameManager::createObjects()
 	player.setAngle(glm::radians(0.0f));
 	player.setTexture(texID);
 	player.setShader(shader);
+}
+
+void GameManager::generateEnemy(Object enemy)
+{
+	srand(time(NULL));
+	switch (rand() % 3 + 1)
+	{
+	case 1:
+		texID = loadTexture("./textures/Enemy/bee-1.png");
+		this->enemy = Object("enemy", glm::vec3(1100, 90, 0), glm::vec3(64, 64, 1.0), texID, shader);
+		break;
+	case 2:
+		texID = loadTexture("./textures/Enemy/bee-2.png");
+		this->enemy = Object("enemy", glm::vec3(1100, 120, 0), glm::vec3(64, 64, 1.0), texID, shader);
+		break;
+	case 3:
+		texID = loadTexture("./textures/Enemy/slug-1.png");
+		this->enemy = Object("enemy", glm::vec3(1100, 51, 0), glm::vec3(64, 42, 1.0), texID, shader);
+		break;
+
+	default:
+		break;
+	}
 }
 
 void GameManager::run()
@@ -140,22 +163,32 @@ void GameManager::run()
 			objects[i]->draw();
 		}
 
+		enemy.update();
+		enemy.draw();
 
 		player.update();
 		player.draw();
 
+		if (enemy.getPosition().x < -530)
+			generateEnemy(enemy);
+		else
+			enemy.addPositionX(-6 - speed);
+
 		
 
-
-		// REFAZER O PULO
-
-		/*if (holding) {
-			jumpForce += 4;
+		switch (space)
+		{
+		case 0: break;
+		case 1: jumpForce += 4; break;
+		case 2: endpulo = jumpForce; jumpForce = 0; space = 0; player.jump(true); player.setEndJump(false);  break;
+		default: break;
 		}
-		else {
-			player.jump(jumpForce, 1);
-			jumpForce = 0;
-		}*/
+
+		if (endpulo > 0 && !player.getEndJump()) {
+			player.jump(endpulo, 1.5);
+		}
+
+		
 
 		//Movimento MG
 		{
@@ -256,9 +289,7 @@ void GameManager::finish()
 
 void GameManager::key_callback(GLFWwindow* window, int key, int scancode, int action, int mode)
 {
-	//APAGAR ISTO:
-	bool holding = true;
-	/////
+
 
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 		glfwSetWindowShouldClose(window, GL_TRUE);
@@ -268,13 +299,13 @@ void GameManager::key_callback(GLFWwindow* window, int key, int scancode, int ac
 
 
 
-	/*if (key == GLFW_KEY_SPACE && action == GLFW_PRESS && !player.getFalling() && !player.getJumped())
-		holding = true;
+	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+		space = 1;
 
-	if (key == GLFW_KEY_SPACE && action == GLFW_RELEASE && !player.getFalling() && !player.getJumped()) {
-		holding = false;
-		player.jump(true);
-	}*/
+	if (key == GLFW_KEY_SPACE && action == GLFW_RELEASE)
+		space = 2;
+		
+	
 }
 
 int GameManager::loadTexture(string path)

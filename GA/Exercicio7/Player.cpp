@@ -5,27 +5,28 @@
 
 void Player::jump(float force, float speed)
 {
-	if (jumping) {
-
-		if (force > 120)
-			force = 120;
+	if (!falling && jumped) {
+		if (force > 190)
+			force = 190;
 
 		jumpHeight = force + position.y;
-		jumping = false;
-		jumped = true;
+		jumped = false;
+		jumping = true;
 	}
 
-	if (!falling && jumped && position.y < jumpHeight) {
-		addPositionY(2 * speed);
+	if (jumping && position.y < jumpHeight) {
+		addPositionY(3.5 * speed);
 		if (position.y >= jumpHeight) {
 			falling = true;
-			jumped = false;
+			jumping = false;
 		}
 	}
 	else if (falling && position.y > ground) {
-		removePositionY(2 * speed);
+		removePositionY(3.0f * speed);
 		if (position.y <= ground) {
+			position.y = 62;
 			falling = false;
+			endJump = true;
 		}
 	}
 
