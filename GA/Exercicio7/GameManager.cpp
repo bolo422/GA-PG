@@ -1,14 +1,17 @@
 #include "GameManager.h"
 
 int space = 0;
+int menuSpace = 0;
+int paused = 0;
 
 void GameManager::initialize()
 {
+
 	// Inicialização da GLFW
 	glfwInit();
 
 	// Criação da janela GLFW
-	window = glfwCreateWindow(WIDTH, HEIGHT, "Ola Triangulo!", nullptr, nullptr);
+	window = glfwCreateWindow(WIDTH, HEIGHT, "Bunny Girl", nullptr, nullptr);
 	glfwMakeContextCurrent(window);
 
 	// Fazendo o registro da função de callback para a janela GLFW
@@ -68,6 +71,18 @@ void GameManager::initialize()
 	speedTimer.setInitialTime(1500);
 }
 
+void GameManager::restart()
+{
+	speed = 0;
+	holding = false;
+	jumpForce = 0;
+	endpulo = 0;
+
+	createObjects();
+
+	speedTimer.setInitialTime(1500);
+}
+
 void GameManager::assignTextures()
 {
 }
@@ -122,6 +137,23 @@ void GameManager::createObjects()
 	player.setAngle(glm::radians(0.0f));
 	player.setTexture(texID);
 	player.setShader(shader);
+
+	//MenuArt
+	texID = loadTexture("./textures/menuart.png");
+	obj = new Object("menuArt", glm::vec3(WIDTH / 2, HEIGHT / 2, 0), glm::vec3(997, 501, 1.0), texID, shader);
+	menuArt.push_back(obj);
+
+	texID = loadTexture("./textures/menuart2.png");
+	obj = new Object("menuArt", glm::vec3(WIDTH / 2, HEIGHT / 2-270, 0), glm::vec3(997/2, 501/2, 1.0), texID, shader);
+	menuArt.push_back(obj);
+
+	texID = loadTexture("./textures/menuart3.png");
+	obj = new Object("menuArt", glm::vec3(WIDTH / 2, HEIGHT / 2, 0), glm::vec3(997, 501, 1.0), texID, shader);
+	menuArt.push_back(obj);
+
+	texID = loadTexture("./textures/menuart4.png");
+	obj = new Object("menuArt", glm::vec3(WIDTH / 2, HEIGHT / 2 - 270, 0), glm::vec3(997 / 2, 501 / 2, 1.0), texID, shader);
+	menuArt.push_back(obj);
 }
 
 void GameManager::generateEnemy(Object enemy)
@@ -147,15 +179,8 @@ void GameManager::generateEnemy(Object enemy)
 	}
 }
 
-void GameManager::run()
+void GameManager::drawEnvironment()
 {
-	while (!glfwWindowShouldClose(window)) {
-		// Checa se houveram eventos de input (key pressed, mouse moved etc.) e chama as funções de callback correspondentes
-		glfwPollEvents();
-		glfwGetFramebufferSize(window, &width, &height);
-		glViewport(0, 0, width, height);
-		glUniformMatrix4fv(projLoc, 1, FALSE, glm::value_ptr(projection));
-
 
 		for (int i = 0; i < objects.size(); i++)
 		{
@@ -163,33 +188,7 @@ void GameManager::run()
 			objects[i]->draw();
 		}
 
-		enemy.update();
-		enemy.draw();
-
-		player.update();
-		player.draw();
-
-		if (enemy.getPosition().x < -530)
-			generateEnemy(enemy);
-		else
-			enemy.addPositionX(-6 - speed);
-
-		
-
-		switch (space)
-		{
-		case 0: break;
-		case 1: jumpForce += 4; break;
-		case 2: endpulo = jumpForce; jumpForce = 0; space = 0; player.jump(true); player.setEndJump(false);  break;
-		default: break;
-		}
-
-		if (endpulo > 0 && !player.getEndJump()) {
-			player.jump(endpulo, 1.5);
-		}
-
-		
-
+		if(!pause){
 		//Movimento MG
 		{
 			objects[2]->addPositionX(-2 - speed);
@@ -264,17 +263,105 @@ void GameManager::run()
 				objects[5]->setPositionX(1536);
 			}
 		}
+	}
+}
 
+void GameManager::run()
+{
+	while (!glfwWindowShouldClose(window)) {
+		// Checa se houveram eventos de input (key pressed, mouse moved etc.) e chama as funções de callback correspondentes
+		glfwPollEvents();
+		glfwGetFramebufferSize(window, &width, &height);
+		glViewport(0, 0, width, height);
+		//glUniformMatrix4fv(projLoc, 1, FALSE, glm::value_ptr(projection));
 
-
-
-		speedTimer.tick();
-		if (speedTimer.over()) {
-			speed++;
-			speedTimer.restart(speedTimer.getInitialTime() * 0.95);
-			cout << "Incremento de tempo : Speed = " << speed << " Ticks: " << speedTimer.getRemainingTime() << endl;
+		if (paused == 1 && !gameOver) {
+			pause = !pause;
+			paused = 0;
 		}
 
+		drawEnvironment();
+		enemy.update();
+		enemy.draw();
+		player.update();
+		player.draw();
+
+		switch (scene)
+		{
+		case Menu:
+
+			menuArt[0]->update();
+			menuArt[0]->draw();
+			menuArt[1]->update();
+			menuArt[1]->draw();
+			//pause = true;
+			if (menuSpace == 1) {
+				//pause = false;
+				menuSpace == 0;
+				scene = Gameplay;
+			}
+
+			break;
+
+		case Gameplay:
+
+				if (!pause) {
+					if (CheckCollision(player, enemy)) {
+						cout << "colis�o\n";
+						gameOver = true;
+						menuSpace = 0;
+						scene = Gameover;
+					}
+
+					if (enemy.getPosition().x < -530)
+						generateEnemy(enemy);
+					else
+						enemy.addPositionX(-6 - speed);
+
+					switch (space)
+					{
+					case 0: break;
+					case 1: jumpForce += 4; break;
+					case 2: endpulo = jumpForce; jumpForce = 0; space = 0; player.jump(true); player.setEndJump(false);  break;
+					}
+
+					if (endpulo > 0 && !player.getEndJump()) {
+						player.jump(endpulo, 1.5);
+					}
+
+
+					speedTimer.tick();
+					if (speedTimer.over()) {
+						speed++;
+						speedTimer.restart(speedTimer.getInitialTime() * 0.95);
+						cout << "Incremento de tempo : Speed = " << speed << " Ticks: " << speedTimer.getRemainingTime() << endl;
+					}
+				}
+			break;
+
+
+		case Gameover:
+			pause = true;
+			menuArt[2]->update();
+			menuArt[2]->draw();
+			menuArt[3]->update();
+			menuArt[3]->draw();
+
+			if (menuSpace == 1) {
+				pause = false;
+				gameOver = false;
+				menuSpace == 0;
+
+				objects.clear();
+				menuArt.clear();
+
+				scene = Gameplay;
+				restart();
+			}
+
+			break;
+
+		}
 
 		// Troca os buffers da tela
 		glfwSwapBuffers(window);
@@ -292,18 +379,21 @@ void GameManager::key_callback(GLFWwindow* window, int key, int scancode, int ac
 
 
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
-		glfwSetWindowShouldClose(window, GL_TRUE);
-
+		paused = 1;
 	//   ATEN��O!!!!!!!!!!
 	//   Implementar estes ifs no in�cio do update e lembrar de voltar o array de keys para 0!!!!
 
 
 
-	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+	if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) {
 		space = 1;
+		
+	}
 
-	if (key == GLFW_KEY_SPACE && action == GLFW_RELEASE)
+	if (key == GLFW_KEY_SPACE && action == GLFW_RELEASE) {
 		space = 2;
+		menuSpace = 1;
+	}
 		
 	
 }
@@ -350,5 +440,19 @@ int GameManager::loadTexture(string path)
 
 	return texID;
 }
+
+bool GameManager::CheckCollision(Object& one, Object& two)
+{
+	// collision x-axis?
+	bool collisionX = one.getPosition().x + one.getDimesions().x * 0.70  >= two.getPosition().x &&
+		two.getPosition().x + two.getDimesions().x >= one.getPosition().x;
+	// collision y-axis?
+	bool collisionY = one.getPosition().y + one.getDimesions().y * 0.70 >= two.getPosition().y &&
+		two.getPosition().y + two.getDimesions().y * 0.70 >= one.getPosition().y;
+	// collision only if on both axes
+	return collisionX && collisionY;
+}
+
+
 
 

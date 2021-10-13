@@ -30,6 +30,8 @@
 
 
 using namespace std;
+enum Scene{Menu, Gameplay, Gameover};
+
 
 class GameManager
 {
@@ -38,9 +40,11 @@ public:
 	~GameManager(){}
 
 	void initialize();
+	void restart();
 	void assignTextures();
 	void createObjects();
 	void generateEnemy(Object enemy);
+	void drawEnvironment();
 
 	void run();
 	void finish();
@@ -50,11 +54,12 @@ public:
 
 	int loadTexture(string path);
 
+	bool CheckCollision(Object& one, Object& two); // AABB - AABB collision
 
-	
 
 
 protected:
+	Scene scene = Menu;
 	
 	Timer speedTimer;
 	float speed = 0;
@@ -69,16 +74,17 @@ protected:
 	//Objects and Textures
 	GLuint texID = 0;
 	vector <Object*> objects;
+	vector <Object*> menuArt;
 	Object enemy;
-	//Object bg, bg2, mg, mg2, ground, ground2;
 	Player player;
 
-	//tests enemy
-	//Object enemy1, enemy2;
+
 
 	bool holding = false;
 	int jumpForce = 0;
 	int endpulo = 0;
+	bool pause = false;
+	bool gameOver = false;
 
 	const GLuint WIDTH = 1024, HEIGHT = 768;
 	const float pi = 3.14159;

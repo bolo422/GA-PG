@@ -43,8 +43,11 @@ public:
 	
 	//Get posição
 	inline glm::vec3 getPosition() { return position; }
+
 	//Setar dimensões
 	inline void setDimensions(glm::vec3 _scale) { scale = _scale; }
+	inline glm::vec3 getDimesions(){ return scale; }
+
 	//Setar angulo
 	inline void setAngle(float _angle) { angle = _angle; }
 	//Setar textura

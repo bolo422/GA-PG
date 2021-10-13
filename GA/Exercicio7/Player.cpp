@@ -6,8 +6,8 @@
 void Player::jump(float force, float speed)
 {
 	if (!falling && jumped) {
-		if (force > 190)
-			force = 190;
+		if (force > 150)
+			force = 150;
 
 		jumpHeight = force + position.y;
 		jumped = false;
