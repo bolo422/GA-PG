@@ -1,4 +1,19 @@
 ﻿C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\MSBuild\Microsoft\VC\v160\Microsoft.CppBuild.targets(513,5): warning MSB8028: O diretório intermediário (Debug\) contém arquivos compartilhados de outro projeto (HelloOrtho.vcxproj). Isso pode levar a um comportamento incorreto de limpeza e recompilação.
-  Player.cpp
-C:\Users\crow1\Documents\GitHub\GA-PG\GA\Exercicio7\Player.cpp(18,20): warning C4244: 'argumento': conversão de 'double' para 'float', possível perda de dados
+  GameManager.cpp
+C:\Users\crow1\Documents\GitHub\GA-PG\GA\Exercicio7\GameManager.h(101,17): warning C4305: 'inicializando': truncamento de 'double' para 'const float'
+C:\Users\crow1\Documents\GitHub\GA-PG\GA\Exercicio7\GameManager.cpp(181,12): warning C4244: 'argumento': conversão de 'time_t' para 'unsigned int', possível perda de dados
+C:\Users\crow1\Documents\GitHub\GA-PG\GA\Exercicio7\GameManager.cpp(205,21): warning C4018: '<': incompatibilidade de signed/unsigned
+C:\Users\crow1\Documents\GitHub\GA-PG\GA\Exercicio7\GameManager.cpp(225,36): warning C4244: 'argumento': conversão de 'double' para 'float', possível perda de dados
+C:\Users\crow1\Documents\GitHub\GA-PG\GA\Exercicio7\GameManager.cpp(229,36): warning C4244: 'argumento': conversão de 'double' para 'float', possível perda de dados
+C:\Users\crow1\Documents\GitHub\GA-PG\GA\Exercicio7\GameManager.cpp(246,34): warning C4244: 'argumento': conversão de 'double' para 'float', possível perda de dados
+C:\Users\crow1\Documents\GitHub\GA-PG\GA\Exercicio7\GameManager.cpp(247,34): warning C4244: 'argumento': conversão de 'double' para 'float', possível perda de dados
+C:\Users\crow1\Documents\GitHub\GA-PG\GA\Exercicio7\GameManager.cpp(250,36): warning C4244: 'argumento': conversão de 'double' para 'float', possível perda de dados
+C:\Users\crow1\Documents\GitHub\GA-PG\GA\Exercicio7\GameManager.cpp(254,36): warning C4244: 'argumento': conversão de 'double' para 'float', possível perda de dados
+C:\Users\crow1\Documents\GitHub\GA-PG\GA\Exercicio7\GameManager.cpp(275,36): warning C4244: 'argumento': conversão de 'double' para 'float', possível perda de dados
+C:\Users\crow1\Documents\GitHub\GA-PG\GA\Exercicio7\GameManager.cpp(279,36): warning C4244: 'argumento': conversão de 'double' para 'float', possível perda de dados
+C:\Users\crow1\Documents\GitHub\GA-PG\GA\Exercicio7\GameManager.cpp(300,20): warning C4018: '<': incompatibilidade de signed/unsigned
+C:\Users\crow1\Documents\GitHub\GA-PG\GA\Exercicio7\GameManager.cpp(342,15): warning C4553: '==': o resultado da expressão não usado; você pretendia que fosse '='?
+C:\Users\crow1\Documents\GitHub\GA-PG\GA\Exercicio7\GameManager.cpp(371,19): warning C4244: 'argumento': conversão de 'int' para 'float', possível perda de dados
+C:\Users\crow1\Documents\GitHub\GA-PG\GA\Exercicio7\GameManager.cpp(381,54): warning C4244: 'argumento': conversão de 'double' para 'int', possível perda de dados
+C:\Users\crow1\Documents\GitHub\GA-PG\GA\Exercicio7\GameManager.cpp(398,15): warning C4553: '==': o resultado da expressão não usado; você pretendia que fosse '='?
   Exercicio7.vcxproj -> C:\Users\crow1\Documents\GitHub\GA-PG\GA\Debug\HelloTransforms.exe

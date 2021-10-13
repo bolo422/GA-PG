@@ -89,13 +89,13 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../dependencies/glm;../../dependencies/glfw-3.3.4.bin.WIN32/include;../../dependencies/GLAD/include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../dependencies/glm;../../dependencies/glfw-3.3.4.bin.WIN32/include;../../dependencies/GLAD/include;../../dependencies/freetype/include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>../../dependencies/glfw-3.3.4.bin.WIN32/lib-vc2019</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>../../dependencies/glfw-3.3.4.bin.WIN32/lib-vc2019;../../dependencies/freetype</AdditionalLibraryDirectories>
+      <AdditionalDependencies>glfw3.lib;opengl32.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">

@@ -7,6 +7,8 @@
 #include <chrono>
 #include <ctime> 
 #include <cstdlib>
+#include <map>
+
 
 // GLAD
 #include <glad/glad.h>
@@ -16,6 +18,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
+#include <ft2build.h>
+#include FT_FREETYPE_H  
 
 
 // stb
@@ -45,6 +50,7 @@ public:
 	void createObjects();
 	void generateEnemy(Object enemy);
 	void drawEnvironment();
+	void write(string number);
 
 	void run();
 	void finish();
@@ -58,10 +64,14 @@ public:
 
 
 
+
 protected:
 	Scene scene = Menu;
 	
-	Timer speedTimer;
+
+
+
+	Timer speedTimer, scoreTimer;
 	float speed = 0;
 
 	GLFWwindow* window = 0;
@@ -75,10 +85,11 @@ protected:
 	GLuint texID = 0;
 	vector <Object*> objects;
 	vector <Object*> menuArt;
+	vector <Object*> numbers;
 	Object enemy;
 	Player player;
 
-
+	int score = 0;
 
 	bool holding = false;
 	int jumpForce = 0;

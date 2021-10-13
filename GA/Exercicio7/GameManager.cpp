@@ -69,6 +69,8 @@ void GameManager::initialize()
 
 
 	speedTimer.setInitialTime(1500);
+	scoreTimer.setInitialTime(80);
+
 }
 
 void GameManager::restart()
@@ -77,10 +79,18 @@ void GameManager::restart()
 	holding = false;
 	jumpForce = 0;
 	endpulo = 0;
+	score = 0;
+
+	for (int i = 0; i < 10; i++)
+	{
+		numbers[i]->setTexture(loadTexture("./textures/Numbers/n.png"));
+	}
+
 
 	createObjects();
 
 	speedTimer.setInitialTime(1500);
+	scoreTimer.setInitialTime(80);
 }
 
 void GameManager::assignTextures()
@@ -154,6 +164,16 @@ void GameManager::createObjects()
 	texID = loadTexture("./textures/menuart4.png");
 	obj = new Object("menuArt", glm::vec3(WIDTH / 2, HEIGHT / 2 - 270, 0), glm::vec3(997 / 2, 501 / 2, 1.0), texID, shader);
 	menuArt.push_back(obj);
+
+	//Numbers
+	for (int i = 0; i < 10; i++)
+	{
+		texID = loadTexture("./textures/Numbers/n.png");
+		obj = new Object("numbers", glm::vec3(WIDTH/2-WIDTH/4 + 30*i,HEIGHT/2+200,0), glm::vec3(32, 33, 1.0), texID, shader);
+		numbers.push_back(obj);
+	}
+
+
 }
 
 void GameManager::generateEnemy(Object enemy)
@@ -186,6 +206,13 @@ void GameManager::drawEnvironment()
 		{
 			objects[i]->update();
 			objects[i]->draw();
+		}
+
+		for (int i = 0; i < 10; i++)
+		{
+			numbers[i]->update();
+			numbers[i]->draw();
+
 		}
 
 		if(!pause){
@@ -266,6 +293,19 @@ void GameManager::drawEnvironment()
 	}
 }
 
+void GameManager::write(string number)
+{
+	int stringSize = number.length();
+
+	for (int i = 0; i < number.length(); i++)
+	{
+		numbers[i]->setTexture(loadTexture("./textures/Numbers/" + to_string((int)number[i] - 48) + ".png"));
+	}
+	
+}
+
+
+
 void GameManager::run()
 {
 	while (!glfwWindowShouldClose(window)) {
@@ -285,6 +325,8 @@ void GameManager::run()
 		enemy.draw();
 		player.update();
 		player.draw();
+
+		write(to_string(score));
 
 		switch (scene)
 		{
@@ -329,6 +371,9 @@ void GameManager::run()
 						player.jump(endpulo, 1.5);
 					}
 
+					scoreTimer.tick();
+					if (scoreTimer.over())
+						score++;
 
 					speedTimer.tick();
 					if (speedTimer.over()) {
