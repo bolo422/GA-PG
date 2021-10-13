@@ -1,7 +1,10 @@
 #pragma once
+#include "Sprite.h"
 #include "Object.h"
+
 class Player :
-    public Object
+    public Sprite
+    //public Object
 {
 public:
     Player() {}

@@ -39,6 +39,9 @@
     <ClCompile Include="GameManager.cpp">
       <Filter>Arquivos de Origem</Filter>
     </ClCompile>
+    <ClCompile Include="Sprite.cpp">
+      <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Shader.h">
@@ -59,12 +62,18 @@
     <ClInclude Include="GameManager.h">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
+    <ClInclude Include="Sprite.h">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\transforms.fs">
       <Filter>Shaders</Filter>
     </None>
     <None Include="shaders\transforms.vs">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="animatedsprites.fs">
       <Filter>Shaders</Filter>
     </None>
   </ItemGroup>

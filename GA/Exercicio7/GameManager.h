@@ -77,6 +77,7 @@ protected:
 	GLFWwindow* window = 0;
 	int width = 0, height = 0;
 	Shader* shader = 0;
+	Shader* spriteShader = 0;
 
 	glm::mat4 projection;
 	GLint projLoc = 0;

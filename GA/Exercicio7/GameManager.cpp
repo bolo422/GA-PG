@@ -39,6 +39,8 @@ void GameManager::initialize()
 	//int width, height;
 
 	shader = new Shader("./shaders/transforms.vs", "./shaders/transforms.fs");
+	spriteShader = new Shader("./shaders/transforms.vs", "./shaders/animatedsprites.fs");
+
 
 
 	shader->Use();
@@ -139,14 +141,16 @@ void GameManager::createObjects()
 	enemy = Object("enemy", glm::vec3(1500, 80, 0), glm::vec3(74, 64, 1.0), texID, shader);
 
 	//Player
-	texID = loadTexture("./textures/Player/player-idle-1.png");
-	player.initialize();
+	texID = loadTexture("./textures/Player/skip.png");
+	player.initialize(texID,1,8);
 	player.setTag("player");
 	player.setPosition(glm::vec3(200, 62, 0));
 	player.setDimensions(glm::vec3(74, 64, 1.0));
 	player.setAngle(glm::radians(0.0f));
-	player.setTexture(texID);
+	//player.setTexture(texID);
 	player.setShader(shader);
+	// ERRO -> NÃO DESENHA A SPRITE / SPRITE INVISÍVEL
+	//player.setShader(spriteShader);
 
 	//MenuArt
 	texID = loadTexture("./textures/menuart.png");
@@ -172,6 +176,7 @@ void GameManager::createObjects()
 		obj = new Object("numbers", glm::vec3(WIDTH/2-WIDTH/4 + 30*i,HEIGHT/2+200,0), glm::vec3(32, 33, 1.0), texID, shader);
 		numbers.push_back(obj);
 	}
+
 
 
 }
