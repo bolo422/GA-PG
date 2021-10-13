@@ -48,7 +48,7 @@ public:
 	void restart();
 	void assignTextures();
 	void createObjects();
-	void generateEnemy(Object enemy);
+	void generateEnemy();
 	void drawEnvironment();
 	void write(string number);
 

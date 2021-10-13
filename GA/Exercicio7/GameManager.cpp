@@ -66,11 +66,20 @@ void GameManager::initialize()
 
 	glUniform1i(glGetUniformLocation(shader->Program, "ourTexture1"), 0);
 
+
+	
+	//testes com o spriteShader
+
+	/*modelLoc = glGetUniformLocation(spriteShader->Program, "model");
+	glUniform1i(glGetUniformLocation(spriteShader->Program, "ourTexture1"), 0);*/
+
+
+
 	createObjects();
 
 
 
-	speedTimer.setInitialTime(1500);
+	speedTimer.setInitialTime(500);
 	scoreTimer.setInitialTime(80);
 
 }
@@ -101,19 +110,16 @@ void GameManager::assignTextures()
 
 void GameManager::createObjects()
 {
-	//TEXTURES
-	//texID = loadTexture("./textures/Background/middleground.png");
-	//texID = loadTexture("./textures/Background/background.png");
-	//texID = loadTexture("./textures/Player/player-idle-1.png");
-	//texID = loadTexture("./textures/Background/ground.png");
-	//texID = loadTexture("./textures/textures/Enemy/bee-1.png");
+
+	// Criação dos objetos do jogo
 
 
 	//Background
-	Object *obj = new Object;
-	texID = loadTexture("./textures/Background/background.png");
-	obj = new Object("bg", glm::vec3(WIDTH / 2, HEIGHT / 2, 0), glm::vec3(1024, 768, 1.0), texID, shader);
-	objects.push_back(obj);
+	Object *obj = new Object; // inicialização da variável temporária que armazena o objeto antes de colocá-lo no vetor de objetos
+
+	texID = loadTexture("./textures/Background/background.png"); // carrega a textura que será colocada na criação do objeto
+	obj = new Object("bg", glm::vec3(WIDTH / 2, HEIGHT / 2, 0), glm::vec3(1024, 768, 1.0), texID, shader); // criação do objeto
+	objects.push_back(obj); // coloca o objeto na próxim posião do vetor de objetos
 	obj = new Object("bg", glm::vec3(WIDTH * 1.5, HEIGHT / 2, 0), glm::vec3(1024, 768, 1.0), texID, shader);
 	objects.push_back(obj);
 
@@ -132,11 +138,7 @@ void GameManager::createObjects()
 	obj = new  Object("ground", glm::vec3(WIDTH * 1.5, 15, 0), glm::vec3(1024, 30, 1.0), texID, shader);
 	objects.push_back(obj);
 
-	//Enemytest
-	texID = loadTexture("./textures/Enemy/bee-1.png");
-	obj = new Object("enemy", glm::vec3(1500, 70, 0), glm::vec3(74, 64, 1.0), texID, shader);
-	objects.push_back(obj);
-
+	//Enemy
 	texID = loadTexture("./textures/Enemy/bee-1.png");
 	enemy = Object("enemy", glm::vec3(1500, 80, 0), glm::vec3(74, 64, 1.0), texID, shader);
 
@@ -170,33 +172,35 @@ void GameManager::createObjects()
 	menuArt.push_back(obj);
 
 	//Numbers
-	for (int i = 0; i < 10; i++)
-	{
-		texID = loadTexture("./textures/Numbers/n.png");
-		obj = new Object("numbers", glm::vec3(WIDTH/2-WIDTH/4 + 30*i,HEIGHT/2+200,0), glm::vec3(32, 33, 1.0), texID, shader);
-		numbers.push_back(obj);
+	if (numbers.size() < 10) { //Evita que números sejam criados novamente após gameover
+		for (int i = 0; i < 10; i++)
+		{
+			texID = loadTexture("./textures/Numbers/n.png");
+			obj = new Object("numbers", glm::vec3(WIDTH / 2 - WIDTH / 4 + 30 * i, HEIGHT / 2 + 200, 0), glm::vec3(32, 33, 1.0), texID, shader);
+			numbers.push_back(obj);
+		}
 	}
 
 
 
 }
 
-void GameManager::generateEnemy(Object enemy)
+void GameManager::generateEnemy()
 {
 	srand(time(NULL));
 	switch (rand() % 3 + 1)
 	{
 	case 1:
 		texID = loadTexture("./textures/Enemy/bee-1.png");
-		this->enemy = Object("enemy", glm::vec3(1100, 90, 0), glm::vec3(64, 64, 1.0), texID, shader);
+		enemy = Object("enemy", glm::vec3(1100, 90, 0), glm::vec3(64, 64, 1.0), texID, shader);
 		break;
 	case 2:
 		texID = loadTexture("./textures/Enemy/bee-2.png");
-		this->enemy = Object("enemy", glm::vec3(1100, 120, 0), glm::vec3(64, 64, 1.0), texID, shader);
+		enemy = Object("enemy", glm::vec3(1100, 120, 0), glm::vec3(64, 64, 1.0), texID, shader);
 		break;
 	case 3:
 		texID = loadTexture("./textures/Enemy/slug-1.png");
-		this->enemy = Object("enemy", glm::vec3(1100, 51, 0), glm::vec3(64, 42, 1.0), texID, shader);
+		enemy = Object("enemy", glm::vec3(1100, 51, 0), glm::vec3(64, 42, 1.0), texID, shader);
 		break;
 
 	default:
@@ -328,10 +332,13 @@ void GameManager::run()
 		drawEnvironment();
 		enemy.update();
 		enemy.draw();
-		player.update();
-		player.draw();
 
 		write(to_string(score));
+
+		//spriteShader->Use();
+		//spriteShader->setMat4("projection", glm::value_ptr(ortho));
+		player.update();
+		player.draw();
 
 		switch (scene)
 		{
@@ -361,7 +368,7 @@ void GameManager::run()
 					}
 
 					if (enemy.getPosition().x < -530)
-						generateEnemy(enemy);
+						generateEnemy();
 					else
 						enemy.addPositionX(-6 - speed);
 
@@ -401,7 +408,7 @@ void GameManager::run()
 				pause = false;
 				gameOver = false;
 				menuSpace == 0;
-
+				player.resetJump();
 				objects.clear();
 				menuArt.clear();
 

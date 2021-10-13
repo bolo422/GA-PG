@@ -21,6 +21,7 @@ public:
     inline bool getJumping() { return jumping; }
     inline bool getEndJump() { return endJump; }
     inline void setEndJump(bool _endJump) { endJump = _endJump; }
+    inline void resetJump() { jumping = false; falling = false; jumped = false; endJump = false; jumpHeight = 0; }
 
 
 private:

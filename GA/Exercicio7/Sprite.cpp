@@ -72,7 +72,11 @@ void Sprite::update()
 	setRotation(angle, glm::vec3(0.0, 0.0, 1.0));
 	setScale(scale);
 
+	
+
 	shader->setMat4("model", glm::value_ptr(transform));
 	GLint offsetLoc = glGetUniformLocation(shader->Program, "offset");
 	glUniform2f(offsetLoc, iFrame * dx, iAnimation * dy);
 }
+
+

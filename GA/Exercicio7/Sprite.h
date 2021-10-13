@@ -13,6 +13,7 @@ public:
     void update();
 
 
+
 protected:
     int nAnimations, nFrames, iAnimation, iFrame;
     float dx, dy;
